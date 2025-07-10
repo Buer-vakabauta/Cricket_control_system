@@ -1,7 +1,7 @@
 .\objects\adcconfig.o: Hardware\ADCconfig.c
 .\objects\adcconfig.o: .\start\stm32f10x.h
 .\objects\adcconfig.o: .\start\core_cm3.h
-.\objects\adcconfig.o: D:\Keil5\Keil5file\Keil5Core\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\adcconfig.o: D:\stm+keil5\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\adcconfig.o: .\start\system_stm32f10x.h
 .\objects\adcconfig.o: .\User\stm32f10x_conf.h
 .\objects\adcconfig.o: .\Library\stm32f10x_adc.h

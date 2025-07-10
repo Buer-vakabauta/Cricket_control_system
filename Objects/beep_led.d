@@ -1,7 +1,7 @@
 .\objects\beep_led.o: Hardware\Beep_Led.c
 .\objects\beep_led.o: .\start\stm32f10x.h
 .\objects\beep_led.o: .\start\core_cm3.h
-.\objects\beep_led.o: D:\Keil5\Keil5file\Keil5Core\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\beep_led.o: D:\stm+keil5\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\beep_led.o: .\start\system_stm32f10x.h
 .\objects\beep_led.o: .\User\stm32f10x_conf.h
 .\objects\beep_led.o: .\Library\stm32f10x_adc.h

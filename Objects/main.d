@@ -4,7 +4,7 @@
 .\objects\main.o: .\Hardware\UART.h
 .\objects\main.o: .\start\stm32f10x.h
 .\objects\main.o: .\start\core_cm3.h
-.\objects\main.o: D:\Keil5\Keil5file\Keil5Core\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\main.o: D:\stm+keil5\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\main.o: .\start\system_stm32f10x.h
 .\objects\main.o: .\User\stm32f10x_conf.h
 .\objects\main.o: .\Library\stm32f10x_adc.h
@@ -31,9 +31,10 @@
 .\objects\main.o: .\Library\stm32f10x_usart.h
 .\objects\main.o: .\Library\stm32f10x_wwdg.h
 .\objects\main.o: .\Library\misc.h
-.\objects\main.o: D:\Keil5\Keil5file\Keil5Core\ARM\ARMCC\Bin\..\include\string.h
-.\objects\main.o: D:\Keil5\Keil5file\Keil5Core\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\main.o: D:\stm+keil5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\main.o: D:\stm+keil5\ARM\ARMCC\Bin\..\include\stdio.h
 .\objects\main.o: .\Hardware\Delay.h
 .\objects\main.o: .\Hardware\Timer.h
 .\objects\main.o: .\Hardware\PWM.h
 .\objects\main.o: .\Hardware\OLED.h
+.\objects\main.o: .\Hardware\Button.h

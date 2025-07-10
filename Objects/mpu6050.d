@@ -4,7 +4,7 @@
 .\objects\mpu6050.o: .\Hardware\UART.h
 .\objects\mpu6050.o: .\start\stm32f10x.h
 .\objects\mpu6050.o: .\start\core_cm3.h
-.\objects\mpu6050.o: D:\Keil5\Keil5file\Keil5Core\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\mpu6050.o: D:\stm+keil5\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\mpu6050.o: .\start\system_stm32f10x.h
 .\objects\mpu6050.o: .\User\stm32f10x_conf.h
 .\objects\mpu6050.o: .\Library\stm32f10x_adc.h
@@ -31,7 +31,7 @@
 .\objects\mpu6050.o: .\Library\stm32f10x_usart.h
 .\objects\mpu6050.o: .\Library\stm32f10x_wwdg.h
 .\objects\mpu6050.o: .\Library\misc.h
-.\objects\mpu6050.o: D:\Keil5\Keil5file\Keil5Core\ARM\ARMCC\Bin\..\include\string.h
-.\objects\mpu6050.o: D:\Keil5\Keil5file\Keil5Core\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\mpu6050.o: D:\stm+keil5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\mpu6050.o: D:\stm+keil5\ARM\ARMCC\Bin\..\include\stdio.h
 .\objects\mpu6050.o: Hardware\MPU6050_Reg.h
 .\objects\mpu6050.o: Hardware\Delay.h

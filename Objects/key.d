@@ -1,7 +1,7 @@
 .\objects\key.o: Hardware\Key.c
 .\objects\key.o: .\start\stm32f10x.h
 .\objects\key.o: .\start\core_cm3.h
-.\objects\key.o: D:\Keil5\Keil5file\Keil5Core\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\key.o: D:\stm+keil5\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\key.o: .\start\system_stm32f10x.h
 .\objects\key.o: .\User\stm32f10x_conf.h
 .\objects\key.o: .\Library\stm32f10x_adc.h

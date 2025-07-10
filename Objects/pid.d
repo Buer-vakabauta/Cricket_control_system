@@ -2,7 +2,7 @@
 .\objects\pid.o: Hardware\PID.h
 .\objects\pid.o: .\start\stm32f10x.h
 .\objects\pid.o: .\start\core_cm3.h
-.\objects\pid.o: D:\Keil5\Keil5file\Keil5Core\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\pid.o: D:\stm+keil5\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\pid.o: .\start\system_stm32f10x.h
 .\objects\pid.o: .\User\stm32f10x_conf.h
 .\objects\pid.o: .\Library\stm32f10x_adc.h
@@ -30,6 +30,6 @@
 .\objects\pid.o: .\Library\stm32f10x_wwdg.h
 .\objects\pid.o: .\Library\misc.h
 .\objects\pid.o: Hardware\Motor.h
-.\objects\pid.o: D:\Keil5\Keil5file\Keil5Core\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\pid.o: D:\stm+keil5\ARM\ARMCC\Bin\..\include\stdio.h
 .\objects\pid.o: Hardware\UART.h
 .\objects\pid.o: Hardware\Delay.h

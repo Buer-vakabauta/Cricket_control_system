@@ -67,7 +67,9 @@ file(GLOB_RECURSE SOURCES "startup/*.*" "User/*.*" STM32F10x_FWLib/*.* "Hardware
 # 设置链接脚本路径
 set(LINKER_SCRIPT ${CMAKE_SOURCE_DIR}/STM32F103C8Tx_FLASH.ld
         User/main.c
-        Hardware/Beep_Led.c)
+        Hardware/Beep_Led.c
+        Hardware/Button.cpp
+        Hardware/Button.h)
 # 添加链接选项，包括链接脚本和其他选项
 add_link_options(-Wl,-gc-sections,--print-memory-usage,-Map=${PROJECT_BINARY_DIR}/${PROJECT_NAME}.map)
 add_link_options(-mcpu=cortex-m3 -mthumb -mthumb-interwork)

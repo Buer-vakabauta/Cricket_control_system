@@ -2,7 +2,7 @@
 .\objects\esp8266.o: Hardware\UART.h
 .\objects\esp8266.o: .\start\stm32f10x.h
 .\objects\esp8266.o: .\start\core_cm3.h
-.\objects\esp8266.o: D:\Keil5\Keil5file\Keil5Core\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\esp8266.o: D:\stm+keil5\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\esp8266.o: .\start\system_stm32f10x.h
 .\objects\esp8266.o: .\User\stm32f10x_conf.h
 .\objects\esp8266.o: .\Library\stm32f10x_adc.h
@@ -31,5 +31,5 @@
 .\objects\esp8266.o: .\Library\misc.h
 .\objects\esp8266.o: Hardware\ESP8266.h
 .\objects\esp8266.o: Hardware\OLED.h
-.\objects\esp8266.o: D:\Keil5\Keil5file\Keil5Core\ARM\ARMCC\Bin\..\include\stdio.h
-.\objects\esp8266.o: D:\Keil5\Keil5file\Keil5Core\ARM\ARMCC\Bin\..\include\stdarg.h
+.\objects\esp8266.o: D:\stm+keil5\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\esp8266.o: D:\stm+keil5\ARM\ARMCC\Bin\..\include\stdarg.h

@@ -6,6 +6,7 @@
 //
 #include "stm32f10x.h"
 #include "Encoder.h"
+#include "Delay.h"
 //输入的脉冲数=编码器线数13x电机减速比20
 //电机转一圈计算得到的脉冲数为 13×20×4 = 1040
 //编码器初始化，TIM3

@@ -41,6 +41,7 @@
 ".\objects\key.o"
 ".\objects\motorcontrol.o"
 ".\objects\madgwickahrs.o"
+".\objects\button.o"
 ".\objects\main.o"
 ".\objects\stm32f10x_it.o"
 --strict --scatter ".\Objects\projet.sct"

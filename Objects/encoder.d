@@ -1,7 +1,7 @@
 .\objects\encoder.o: Hardware\Encoder.c
 .\objects\encoder.o: .\start\stm32f10x.h
 .\objects\encoder.o: .\start\core_cm3.h
-.\objects\encoder.o: D:\Keil5\Keil5file\Keil5Core\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\encoder.o: D:\stm+keil5\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\encoder.o: .\start\system_stm32f10x.h
 .\objects\encoder.o: .\User\stm32f10x_conf.h
 .\objects\encoder.o: .\Library\stm32f10x_adc.h
@@ -29,3 +29,4 @@
 .\objects\encoder.o: .\Library\stm32f10x_wwdg.h
 .\objects\encoder.o: .\Library\misc.h
 .\objects\encoder.o: Hardware\Encoder.h
+.\objects\encoder.o: Hardware\Delay.h

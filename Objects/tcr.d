@@ -1,7 +1,7 @@
 .\objects\tcr.o: Hardware\TCR.c
 .\objects\tcr.o: .\start\stm32f10x.h
 .\objects\tcr.o: .\start\core_cm3.h
-.\objects\tcr.o: D:\Keil5\Keil5file\Keil5Core\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\tcr.o: D:\stm+keil5\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\tcr.o: .\start\system_stm32f10x.h
 .\objects\tcr.o: .\User\stm32f10x_conf.h
 .\objects\tcr.o: .\Library\stm32f10x_adc.h

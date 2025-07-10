@@ -44,7 +44,7 @@ void PWM_SetCompare2(uint16_t Compare) { TIM_SetCompare2(TIM2, Compare); }
 void PWM_SetCompare3(uint16_t Compare) { TIM_SetCompare3(TIM2, Compare); }
 void PWM_SetCompare4(uint16_t Compare) { TIM_SetCompare4(TIM2, Compare); }
 
-// duty: 0~100 (%)，对应0.5ms~2.5ms在20ms周期中
+// duty: 0~100 (%)，对应2.5ms~12.5ms在20ms周期中
 void PWM1_setDuty(float duty) { TIM_SetCompare1(TIM2, (uint16_t)(duty * 20)); }
 void PWM2_setDuty(float duty) { TIM_SetCompare2(TIM2, (uint16_t)(duty * 20)); }
 void PWM3_setDuty(float duty) { TIM_SetCompare3(TIM2, (uint16_t)(duty * 20)); }
