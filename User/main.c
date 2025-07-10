@@ -4,6 +4,7 @@
 #include <Delay.h>
 #include <Timer.h>
 #include "PWM.h"
+#include <OLED.h>
 //全局变量
 uint8_t flag=0;
 float angle1=135;
@@ -18,6 +19,7 @@ void init()
 {
     Timer_Init_TIM1();
     PWM_Init(1999, 71);
+	OLED_Init();
 #if ENABLE_UART
     UART_Init(9600);
 #endif
@@ -25,7 +27,6 @@ void init()
 int main()
 {
     init();
-    Servo_setAngle(angle1,angle2);
 	main_loop();
 }
 
@@ -37,11 +38,9 @@ void main_loop(void)
     while (1){
 
 #if ENABLE_UART
-        esp_printf("%.2f,%.2f",angle1,angle2);
-        if(strlen(uart_buffer)>0&&uart_buffer[0]=='#'){
-            sscanf(uart_buffer,"#%f,%f",&angle1,&angle2);
-            Servo_setAngle(135,135);
-        }
+		
+        esp_printf("Hello");
+		OLED_ShowString(1,1,"Start");
         UART_clearBuffer();
 		Delay_ms(200);
 #endif
