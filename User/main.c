@@ -1,5 +1,5 @@
 //模板工程
-//
+//板球平衡系统
 #include <settings.h>
 #include <Delay.h>
 #include <Timer.h>
