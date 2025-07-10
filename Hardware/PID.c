@@ -18,7 +18,23 @@ void PID_init(PID_structer* PID_){
     PID_->error_sum=0;
 }
 
-int16_t Pos_Speed(PID_structer* _PID ,int16_t Target_value,int16_t Current_value){
+int16_t Pos_Circle(PID_structer* _PID ,int16_t Target_value,int16_t Current_value){
+    _PID->last_error=_PID->error;
+    _PID->error=Target_value-Current_value;
+    _PID->error_sum+=_PID->error;
+    if(_PID->error_sum>100) _PID->error_sum=100;
+    else if(_PID->error_sum<-100) _PID->error_sum=-100;
+    int16_t result=0;
+    result=_PID->KP*_PID->error+(_PID->KI*_PID->error_sum)/10-_PID->KD*(_PID->error-_PID->last_error);
+    //char buffer[16];
+    //sprintf(buffer,"PWM:%d\n",result);
+    //UART_SendString(buffer);
+    if(result>=1999) return 1999;
+    else if(result<=-1999) return -1999;
+    return result;
+}
+
+int16_t Speed_Circle(PID_structer* _PID ,int16_t Target_value,int16_t Current_value){
 
     _PID->last_error=_PID->error;
     _PID->error=Target_value-Current_value;
@@ -51,7 +67,6 @@ int16_t Cal_Speed(PID_structer* _PID ,int16_t Target_value,int16_t Current_value
     if(result>=1999) return 1999;
     else if(result<=-1999) return -1999;
     return result;
-
 }
 
 

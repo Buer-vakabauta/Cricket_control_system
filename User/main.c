@@ -20,7 +20,7 @@ void init();
 void init()
 {
     Timer_Init_TIM1();
-    PWM_Init(1999, 71);
+    PWM_Init(19999, 71);
 	OLED_Init();
     Button_Init();
 #if ENABLE_UART
@@ -39,6 +39,7 @@ void main_loop(void)
 {
     OLED_ShowString(1,1,"Task:");
     OLED_ShowString(3,1,"Y OR N:");
+	Servo_setAngle(0,180,90,0);
     while (1){
         Button_updated();
         OLED_ShowNum(2,1,pox,3);
