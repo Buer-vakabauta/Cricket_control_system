@@ -4,6 +4,7 @@
 #include "stm32f10x.h"
 #ifndef CLIONSTM32DEMO_PWM_H
 #define CLIONSTM32DEMO_PWM_H
+#define MIN_Duty 2.1f
 void PWM_Init(uint16_t  ARR,uint16_t PSC);
 void PWM_SetCompare1(uint16_t Compare);
 void PWM_SetCompare2(uint16_t Compare);

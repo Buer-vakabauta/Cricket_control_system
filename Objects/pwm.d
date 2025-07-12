@@ -28,3 +28,5 @@
 .\objects\pwm.o: .\Library\stm32f10x_usart.h
 .\objects\pwm.o: .\Library\stm32f10x_wwdg.h
 .\objects\pwm.o: .\Library\misc.h
+.\objects\pwm.o: Hardware\Delay.h
+.\objects\pwm.o: Hardware\PWM.h

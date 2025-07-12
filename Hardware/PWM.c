@@ -1,5 +1,6 @@
 #include "stm32f10x.h"                  // Device header
-
+#include "Delay.h"
+#include "PWM.h"
 #define PWM_GPIO GPIO_Pin_0|GPIO_Pin_1|GPIO_Pin_2|GPIO_Pin_3
 
 void PWM_Init(uint16_t ARR, uint16_t PSC)
@@ -54,8 +55,13 @@ void PWM4_setDuty(float duty) { TIM_SetCompare4(TIM2, (uint16_t)(duty * 200)); }
 // 设置舵机角度 angle: 0~270
 void Servo_setAngle(float a1, float a2, float a3, float a4)
 {
-    if(a1 >= 0) PWM1_setDuty(2.5f + (a1 / 270.0f) * 10.0f);
-    if(a2 >= 0) PWM2_setDuty(2.5f + (a2 / 270.0f) * 10.0f);
-    if(a3 >= 0) PWM3_setDuty(2.5f + (a3 / 270.0f) * 10.0f);
-    if(a4 >= 0) PWM4_setDuty(2.5f + (a4 / 270.0f) * 10.0f);
+    if(a1 >= 0) PWM1_setDuty(MIN_Duty + (a1 / 270.0f) * 10.22727f);
+    if(a2 >= 0) PWM2_setDuty(MIN_Duty + (a2 / 270.0f) * 10.19999f);
+    if(a3 >= 0) PWM3_setDuty(MIN_Duty + (a3 / 270.0f) * 10.19999f);
+    if(a4 >= 0) PWM4_setDuty(MIN_Duty + (a4 / 270.0f) * 10.19999f);
+    Delay_ms(500);
+    PWM1_setDuty(0);
+    PWM2_setDuty(0);
+    PWM3_setDuty(0);
+    PWM4_setDuty(0);
 }

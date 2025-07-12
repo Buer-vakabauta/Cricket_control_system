@@ -8,21 +8,23 @@
 #include <UART.h>
 #include <Button.h>
 //全局变量
-char POS_X[4],POS_Y[4];
-uint16_t pox,poy;
 uint8_t flag=0;
-
+uint8_t i=6;
+uint8_t j=1;
+uint8_t t=1;
+uint16_t Current_angle = 0;
 // 定义宏
 void main_loop(void);
 void init();
-
+void Button_detect();
 //初始化
 void init()
 {
-    Timer_Init_TIM1();
+    Timer_Init_TIM4();
     PWM_Init(19999, 71);
 	OLED_Init();
     Button_Init();
+
 #if ENABLE_UART
     UART_Init(9600);
 #endif
@@ -34,44 +36,78 @@ int main()
 	main_loop();
 }
 
-
 void main_loop(void)
 {
     OLED_ShowString(1,1,"Task:");
     OLED_ShowString(3,1,"Y OR N:");
-	Servo_setAngle(0,180,90,0);
+    //Servo_setAngle(270,270,270,270);
+	//Servo_setAngle(180,180,180,180);
+	//Servo_setAngle(180,180,180,90);
+	//Servo_setAngle(180,180,90,90);
+	//Servo_setAngle(180,0,180,180);
+	//Servo_setAngle(180,180,180,0);
+    //Servo_setAngle(97,180,180,180);
+	
     while (1){
         Button_updated();
-        OLED_ShowNum(2,1,pox,3);
-        OLED_ShowNum(2,8,poy,3);
-        //OLED_ShowString(1,7,POS_X);
-        //OLED_ShowString(3,7,POS_Y);
-#if ENABLE_UART
-        esp_printf("Hello");
-		OLED_ShowString(1,1,"Start");
-        UART_clearBuffer();
-		Delay_ms(200);
+        Button_detect();
+        OLED_ShowSignedNum(2,1,ball_posx,3);
+        OLED_ShowSignedNum(2,8,ball_posy,3);
+        //OLED_ShowString(4,1,uart_buffer);
+        OLED_ShowNum(4,1,Current_angle,3);
+      #if ENABLE_UART
+        //UART_SendString("task2");
+		//OLED_ShowString(1,1,"Start");
+        //UART_clearBuffer();
+		//Delay_ms(200);
 #endif
     }
 }
 
-//TIM1中断
-void TIM1_UP_IRQHandler(void)
-{
-    if (TIM_GetITStatus(TIM1, TIM_IT_Update) == SET){
-        //scanf("%s,%s",POS_X,POS_Y);
-        if(data_ready){
-            char *comma = strchr(uart_buffer, ',');
-            if (comma) {
-                *comma = '\0';  // 分割字符串
-                pox = string_to_int(POS_X);
-                poy = string_to_int(POS_Y);
-            }
-            data_ready = 0;
+void Button_detect(){
+    if(BUTTON2_IsReleased()==1){
+        //i = (i == 1) ? 6 : (i - 1);
+        i = (i % 6) + 1;
+        UART_Send_num(i,2);
+        OLED_ShowString(1,6,"task");
+        OLED_ShowNum(1,11,i,1);
+        OLED_ShowString(3,9,"N");
+    };
+    if(BUTTON3_IsReleased()==1)
+    {
+        UART_SendString("Y");
+        switch (i) {
+            case 1:
+                j += 1;
+                Current_angle = 180+j;
+                Servo_setAngle(Current_angle,Current_angle,Current_angle,Current_angle);
+                break;
+            case 2:
+                t += 1;
+                Current_angle = 180 - t;
+                Servo_setAngle(Current_angle,Current_angle,Current_angle,Current_angle);
+                break;
+            case 3:
+                t += 1;
+                Current_angle = 90 + t;
+                Servo_setAngle(Current_angle,Current_angle,Current_angle,Current_angle);
+                break;
+            case 4:
+                
+                t += 1;
+                Current_angle = 90 - t;
+                Servo_setAngle(Current_angle,Current_angle,Current_angle,Current_angle);
+                break;
+            case 5:
+                Servo_setAngle(90,0,0,0);
+                break;
+            case 6:
+                Servo_setAngle(0,0,0,0);
+                break;
+            default:
+                Servo_setAngle(180,180,180,180);
+                break;
         }
-        UART_clearBuffer();
-    #if ENABLE_UART
-    #endif
-        TIM_ClearITPendingBit(TIM1, TIM_IT_Update);
+        OLED_ShowString(3,9,"Y");
     }
 }

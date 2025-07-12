@@ -8,7 +8,7 @@
 //覆盖机械消抖时间通常10~50ms
 #define DEBOUNCE_TIME 30
 //按钮数量
-#define BUTTON_NUM 5
+#define BUTTON_NUM 3
 
 typedef struct {
     uint16_t pin;
@@ -22,6 +22,7 @@ typedef struct {
 void Button_Init();
 void Button_updated();
 uint8_t BUTTON1_IsReleased(void);
+uint8_t BUTTON1_IsPressed(void);
 uint8_t BUTTON2_IsReleased(void);
 uint8_t BUTTON3_IsReleased(void);
 uint8_t BUTTON4_IsReleased(void);
