@@ -173,7 +173,6 @@ void USART_ReceiveString(void) {
             if (received_char == '\n' || received_char == '\r') {
                 uart_buffer[buffer_index] = '\0'; // 字符串结束符
                 buffer_index = 0; // 重置索引准备接收下一条数据
-
                 break;
                 // 在这里处理 uart_buffer 中的数据
             } else if (buffer_index < BUFFER_SIZE - 1) {

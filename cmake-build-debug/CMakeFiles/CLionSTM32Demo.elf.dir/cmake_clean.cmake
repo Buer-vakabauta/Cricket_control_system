@@ -6,8 +6,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/CLionSTM32Demo.elf.dir/Hardware/ADCconfig.c.obj.d"
   "CMakeFiles/CLionSTM32Demo.elf.dir/Hardware/Beep_Led.c.obj"
   "CMakeFiles/CLionSTM32Demo.elf.dir/Hardware/Beep_Led.c.obj.d"
-  "CMakeFiles/CLionSTM32Demo.elf.dir/Hardware/Button.c.obj"
-  "CMakeFiles/CLionSTM32Demo.elf.dir/Hardware/Button.c.obj.d"
+  "CMakeFiles/CLionSTM32Demo.elf.dir/Hardware/Button.cpp.obj"
+  "CMakeFiles/CLionSTM32Demo.elf.dir/Hardware/Button.cpp.obj.d"
   "CMakeFiles/CLionSTM32Demo.elf.dir/Hardware/Delay.c.obj"
   "CMakeFiles/CLionSTM32Demo.elf.dir/Hardware/Delay.c.obj.d"
   "CMakeFiles/CLionSTM32Demo.elf.dir/Hardware/ESP8266.c.obj"
@@ -36,8 +36,6 @@ file(REMOVE_RECURSE
   "CMakeFiles/CLionSTM32Demo.elf.dir/Hardware/Timer.c.obj.d"
   "CMakeFiles/CLionSTM32Demo.elf.dir/Hardware/UART.c.obj"
   "CMakeFiles/CLionSTM32Demo.elf.dir/Hardware/UART.c.obj.d"
-  "CMakeFiles/CLionSTM32Demo.elf.dir/Hardware/control.c.obj"
-  "CMakeFiles/CLionSTM32Demo.elf.dir/Hardware/control.c.obj.d"
   "CMakeFiles/CLionSTM32Demo.elf.dir/STM32F10x_FWLib/src/core_cm3.c.obj"
   "CMakeFiles/CLionSTM32Demo.elf.dir/STM32F10x_FWLib/src/core_cm3.c.obj.d"
   "CMakeFiles/CLionSTM32Demo.elf.dir/STM32F10x_FWLib/src/misc.c.obj"
@@ -96,6 +94,6 @@ file(REMOVE_RECURSE
 )
 
 # Per-language clean rules from dependency scanning.
-foreach(lang ASM C)
+foreach(lang ASM C CXX)
   include(CMakeFiles/CLionSTM32Demo.elf.dir/cmake_clean_${lang}.cmake OPTIONAL)
 endforeach()
