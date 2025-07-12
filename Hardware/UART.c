@@ -4,13 +4,16 @@
 #include "UART.h"
 //#include "cstring"
 #include "string.h"
+#include "stdarg.h"
+#include "stdio.h"
 
 #define BUFFER_SIZE 100
 
 char uart_buffer[BUFFER_SIZE];
 uint8_t buffer_index = 0;
-uint8_t data_ready = 0;
-
+int16_t ball_posx=-1;
+int16_t ball_posy=-1;
+int16_t Xpid=0,Ypid=0;
 
 void UART_Init(uint32_t baud_rate) {
     // 1. 启用 GPIOA 和 USART1 的时钟
@@ -53,54 +56,7 @@ void UART_Init(uint32_t baud_rate) {
     USART_Cmd(USART1, ENABLE);
 }
 
-int string_to_int(const char *str) {
-    int result = 0;
-    int sign = 1;  // 正负号
 
-    // 处理负号
-    if (*str == '-') {
-        sign = -1;
-        str++;
-    }
-
-    // 逐字符转换
-    while (*str >= '0' && *str <= '9') {
-        result = result * 10 + (*str - '0');
-        str++;
-    }
-
-    return result * sign;
-}
-
-float string_to_float(const char *str) {
-    float result = 0.0f;
-    float fraction = 1.0f;
-    int sign = 1;
-
-    // 处理负号
-    if (*str == '-') {
-        sign = -1;
-        str++;
-    }
-
-    // 整数部分
-    while (*str >= '0' && *str <= '9') {
-        result = result * 10.0f + (*str - '0');
-        str++;
-    }
-
-    // 小数部分
-    if (*str == '.') {
-        str++;
-        while (*str >= '0' && *str <= '9') {
-            fraction *= 0.1f;
-            result += (*str - '0') * fraction;
-            str++;
-        }
-    }
-
-    return result * sign;
-}
 
 void UART_SendChar(char c) {
     USART_SendData(USART1, (uint16_t)c);
@@ -152,9 +108,11 @@ void USART1_IRQHandler(void) {
         // 检查是否为终止符（例如换行符）
         if (received_char == '\n' || received_char == '\r') {
             uart_buffer[buffer_index] = '\0'; // 字符串结束符
-            data_ready = 1;
             buffer_index = 0; // 重置索引准备接收下一条数据
             // 在这里处理 uart_buffer 中的数据
+            sscanf(uart_buffer,"(%d, %d)",&ball_posx,&ball_posy);
+            //读取树莓派发送的两个输出的值
+            //sscanf(uart_buffer,"(%d, %d)",&Xpid,&Ypid);
         } else if (buffer_index < BUFFER_SIZE - 1) {
             uart_buffer[buffer_index++] = received_char; // 存入缓冲区
         }

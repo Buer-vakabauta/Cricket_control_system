@@ -6,7 +6,8 @@
 #define CLIONSTM32DEMO_UARTS_H
 #include "stm32f10x.h"
 extern char uart_buffer[];
-extern uint8_t data_ready;
+extern int16_t ball_posx,ball_posy;
+extern int16_t Xpid,Ypid;
 
 void UART_Init(uint32_t baud_rate);
 float string_to_float(const char *str);

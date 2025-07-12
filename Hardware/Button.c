@@ -8,8 +8,8 @@ Button buttons[BUTTON_NUM]={
         {GPIO_Pin_10,1,1,0,0,0},
         {GPIO_Pin_11,1,1,0,0,0},
         {GPIO_Pin_12,1,1,0,0,0},
-        {GPIO_Pin_13,1,1,0,0,0},
-        {GPIO_Pin_14,1,1,0,0,0}
+        //{GPIO_Pin_13,1,1,0,0,0},
+        //{GPIO_Pin_14,1,1,0,0,0}
 };
 
 void Button_Init(){
@@ -23,7 +23,7 @@ void Button_Init(){
 }
 
 void Button_updated(){
-    uint32_t CurrentTime = TIM_GetCounter(TIM1);
+    uint32_t CurrentTime = TIM_GetCounter(TIM4);
     for(int i=0;i<BUTTON_NUM;i++){
         uint8_t pinState = GPIO_ReadInputDataBit(GPIOB,buttons[i].pin);
         if(pinState != buttons[i].LastState){

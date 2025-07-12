@@ -30,3 +30,5 @@
 .\objects\uart.o: .\Library\stm32f10x_wwdg.h
 .\objects\uart.o: .\Library\misc.h
 .\objects\uart.o: D:\stm+keil5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\uart.o: D:\stm+keil5\ARM\ARMCC\Bin\..\include\stdarg.h
+.\objects\uart.o: D:\stm+keil5\ARM\ARMCC\Bin\..\include\stdio.h

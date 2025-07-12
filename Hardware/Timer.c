@@ -39,8 +39,8 @@ void Timer_Init_TIM4() {
     NVIC_InitTypeDef NVIC_InitStructure;						//定义结构体变量
     NVIC_InitStructure.NVIC_IRQChannel = TIM4_IRQn;				//选择配置NVIC的TIM2线
     NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;				//指定NVIC线路使能
-    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;	//指定NVIC线路的抢占优先级为2
-    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;			//指定NVIC线路的响应优先级为1
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 6;	//指定NVIC线路的抢占优先级为2
+    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 6;			//指定NVIC线路的响应优先级为1
     NVIC_Init(&NVIC_InitStructure);								//将结构体变量交给NVIC_Init，配置NVIC外设
 
     /*TIM使能*/
@@ -83,15 +83,11 @@ void Timer_Init_TIM1() {
 
 
 
-/*
+
 void TIM4_IRQHandler(void)
 {
 
 	if (TIM_GetITStatus(TIM4, TIM_IT_Update) == SET){
-        Speedrate=Encoder_Get();
-
 		TIM_ClearITPendingBit(TIM4, TIM_IT_Update);
 	}
 }
-
-*/

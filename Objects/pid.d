@@ -32,4 +32,5 @@
 .\objects\pid.o: Hardware\Motor.h
 .\objects\pid.o: D:\stm+keil5\ARM\ARMCC\Bin\..\include\stdio.h
 .\objects\pid.o: Hardware\UART.h
+.\objects\pid.o: .\Hardware\PWM.h
 .\objects\pid.o: Hardware\Delay.h
