@@ -14,18 +14,20 @@ def detect_ball_pos(frame):
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
     # 设定橙黄色HSV阈值范围（根据你提供的RGB粗略估算）
-    # HSV色调H: 10~30为橙黄，S: 高饱和，V: 高亮
+    # HSV色调H: 10~30为橙黄，S: 高饱和，V: 高亮\
+    #乒乓球
     lower = np.array([10, 100, 100])     # H S V
     upper = np.array([30, 255, 255])
-
+    #lower = (70, 33, 79)
+    #upper = (102, 96, 116)
     # 创建掩码
     mask = cv2.inRange(hsv, lower, upper)
-
     # 去除小噪声
     kernel = np.ones((5, 5), np.uint8)
     mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
     mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
-
+    #cv2.imshow("ball_mask", mask)
+    #cv2.waitKey(1) & 0xFF
     # 查找轮廓
     contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
@@ -47,49 +49,108 @@ def detect_ball_pos(frame):
     return (int(x), int(y))
 
 
-
 def detect_clips(frame):
     """
-    检测黑色夹子中点位置（基于RGB阈值），返回顺序：[top, right, bottom, left]
+    使用HSV检测绿色夹子位置，返回四个点：[top, right, bottom, left]
     """
-    # 构建黑色掩膜
-    lower_black = np.array([30, 30, 30])
-    upper_black = np.array([90, 110, 90])
-    mask = cv2.inRange(frame, lower_black, upper_black)
-
-    # 开闭操作，消除小杂点
-    kernel = np.ones((5, 5), np.uint8)
-    mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
+    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+    # HSV绿色范围
+    lower_hsv = np.array([50, 100, 40])
+    upper_hsv = np.array([80, 255, 255])
+    mask = cv2.inRange(hsv, lower_hsv, upper_hsv)
+    
+    # 增强闭操作处理连通区域
+    kernel = np.ones((7, 7), np.uint8)
     mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
-
-    # 轮廓查找
+    mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
+    
     contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    cv2.imshow("mask_img",mask)
-    cv2.waitKey(1) & 0xFF
     centers = []
+    
     for cnt in contours:
         area = cv2.contourArea(cnt)
-        if area > 100:  # 可调，排除小干扰
+        if area > 500:  # 面积阈值
             M = cv2.moments(cnt)
             if M['m00'] != 0:
                 cx = int(M['m10'] / M['m00'])
                 cy = int(M['m01'] / M['m00'])
                 centers.append((cx, cy))
+    
+    # 改进的去重逻辑：使用更严格的距离阈值
+    dedup_centers = []
+    min_distance = 30  # 增加最小距离阈值
+    
+    for c in centers:
+        is_duplicate = False
+        for dc in dedup_centers:
+            distance = np.sqrt((c[0] - dc[0])**2 + (c[1] - dc[1])**2)
+            if distance < min_distance:
+                is_duplicate = True
+                break
+        
+        if not is_duplicate:
+            dedup_centers.append(c)
+    
+    # 如果检测到的点不是4个，返回None
+    if len(dedup_centers) != 4:
+        #print(f"检测到 {len(dedup_centers)} 个点，需要4个点")
+        return None
+    
+    # 将点按照 [top, right, bottom, left] 的顺序排序
+    points = np.array(dedup_centers)
+    
+    # 找到质心
+    center_x = np.mean(points[:, 0])
+    center_y = np.mean(points[:, 1])
+    
+    # 计算每个点相对于质心的角度
+    angles = []
+    for point in points:
+        dx = point[0] - center_x
+        dy = point[1] - center_y
+        angle = np.arctan2(dy, dx)
+        angles.append(angle)
+    
+    # 将角度和点组合，按角度排序
+    points_with_angles = list(zip(angles, points))
+    points_with_angles.sort(key=lambda x: x[0])
+    
+    # 提取排序后的点
+    sorted_points = [point for angle, point in points_with_angles]
+    
+    # 根据角度确定top, right, bottom, left
+    # 角度从-π到π，-π/2附近是top，0附近是right，π/2附近是bottom，π/-π附近是left
+    
+    # 找到最上面的点（y值最小）
+    top_idx = np.argmin([p[1] for p in sorted_points])
+    top = tuple(sorted_points[top_idx])
+    
+    # 找到最右边的点（x值最大）
+    right_idx = np.argmax([p[0] for p in sorted_points])
+    right = tuple(sorted_points[right_idx])
+    
+    # 找到最下面的点（y值最大）
+    bottom_idx = np.argmax([p[1] for p in sorted_points])
+    bottom = tuple(sorted_points[bottom_idx])
+    
+    # 找到最左边的点（x值最小）
+    left_idx = np.argmin([p[0] for p in sorted_points])
+    left = tuple(sorted_points[left_idx])
+    
+    result = [top, right, bottom, left]
+    
+    # 验证结果：确保四个点都不相同
+    for i in range(4):
+        for j in range(i + 1, 4):
+            if result[i] == result[j]:
+                print(f"警告：检测到重复点 {result[i]}")
+                return None
+    
+    # 转换为numpy数组格式，供cv2.getPerspectiveTransform使用
+    result_array = np.array(result, dtype=np.float32)
+    
+    return result_array
 
-    if len(centers) != 4:
-        return None  # 检测失败
-
-    # 排序：上、右、下、左（用于透视变换）
-    # 先按Y排序（取上和下），再按X区分左右
-    centers = sorted(centers, key=lambda p: p[1])  # 按y坐标从小到大
-    top = min(centers[:2], key=lambda p: p[0])
-    bottom = max(centers[2:], key=lambda p: p[0])
-    right = max(centers, key=lambda p: p[0])
-    left = min(centers, key=lambda p: p[0])
-
-
-
-    return np.float32([top, right, bottom, left])
 
 
 def normalize_ball_position(frame):

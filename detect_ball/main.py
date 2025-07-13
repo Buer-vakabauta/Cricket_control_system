@@ -29,7 +29,9 @@ def main():
             key = cv2.waitKey(1) & 0xFF
             if key == ord('q'):
                 break        
+            print("No ball detect")
             continue
+
 ######################任务选择###############################
         if(Serial.task=='task1'):
             task_flag=1
@@ -77,18 +79,18 @@ def main():
         elif(Serial.task=='task5'):
             Ball.jump_ball(Serial.Servo_set_angle,1,15,1)
 #####################本地控制(调试数据)#######################
+
         ball_x,ball_y=detect_ball_pos(frame)
-        points=detect_clips(frame)
-        if points is not None:
-            for i, point in enumerate(points):
-                x, y = int(point[0]), int(point[1])
-                print(i,x,y)
-                cv2.circle(frame, (x, y), radius=5, color=(0, 0, 255), thickness=-1)  # 红色实心圆
-                cv2.putText(frame, f"P{i+1}", (x + 10, y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)  # 标记编号
+#        points=detect_clips(frame)
+#        if points is not None:
+#            for i, point in enumerate(points):
+#                x, y = int(point[0]), int(point[1])
+#                cv2.circle(frame, (x, y), radius=5, color=(0, 0, 255), thickness=-1)  # 红色实心圆
+#                cv2.putText(frame, f"P{i+1}", (x + 10, y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)  # 标记编号
         cv2.circle(frame,(ball_x,ball_y),radius=5,color=(0,255,0),thickness=-1)
 #######################显示内容#############################
         #绘制任务进程
-        cv2.putText(frame,f'task:{task_flag}',(0,10),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
+        cv2.putText(frame,f'task:{task_flag},ball:{ball_x},{ball_y},{ball_regin}',(0,10),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
         cv2.imshow("ball_detect", frame)
         key = cv2.waitKey(1) & 0xFF
         if key == ord('q'):
