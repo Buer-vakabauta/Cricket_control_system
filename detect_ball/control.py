@@ -1,6 +1,6 @@
 
 import time
-
+import cv2
 class PID:
     def __init__(self, Kp, Ki, Kd, output_limit=None, integral_limit=None):
         self.Kp = Kp  # 比例系数
@@ -91,7 +91,7 @@ class BallPIDController:
         self.target_y = None
         self.stay_duration = stay_duration
         self.stay_start_time = None
-
+        self.last_
     def set_target_region(self, region_id):
         """
         更新目标区域，当目标区域更新时初始化停留时间
@@ -106,39 +106,80 @@ class BallPIDController:
             self.stay_start_time = None  # 重置停留计时器
             print(f"设置目标区域 {region_id}，目标=({self.target_x:.2f},{self.target_y:.2f})")
 
+import time
+
+class BallPIDController:
+    def __init__(self, pid_x, pid_y, vel_pid_x, vel_pid_y, stay_duration=5):
+        self.pid_x = pid_x
+        self.pid_y = pid_y
+        self.vel_pid_x = vel_pid_x
+        self.vel_pid_y = vel_pid_y
+
+        self.target_region = None
+        self.target_x = None
+        self.target_y = None
+
+        self.stay_duration = stay_duration
+        self.stay_start_time = None
+
+        self.last_time = None
+        self.last_x = None
+        self.last_y = None
+
+    def set_target_region(self, region_id):
+        if region_id != self.target_region:
+            self.target_region = region_id
+            self.target_x, self.target_y = get_region_center(region_id)
+            self.pid_x.reset()
+            self.pid_y.reset()
+            self.vel_pid_x.reset()
+            self.vel_pid_y.reset()
+            self.stay_start_time = None
+            self.last_time = None
+            self.last_x = None
+            self.last_y = None
+            print(f"设置目标区域 {region_id}，目标=({self.target_x:.2f},{self.target_y:.2f})")
+
     def update(self, x_now, y_now):
-        """
-        根据球的目标区域PID计算舵机角度,并累计计时器
-        Args:
-            x_now,y_now:小球当前的归一化坐标
-        Returns:
-            返回对应X,Y的角度值
-        """
         if self.target_x is None or x_now is None:
             return 0, 0
 
+        # === 速度估算 ===
+        now_time = time.time()
+        vx, vy = 0, 0
+        if self.last_time is not None:
+            dt = now_time - self.last_time
+            if dt > 0:
+                vx = (x_now - self.last_x) / dt
+                vy = (y_now - self.last_y) / dt
+
+        self.last_time = now_time
+        self.last_x = x_now
+        self.last_y = y_now
+
+        # === PID 控制 ===
         error_x = self.target_x - x_now
         error_y = self.target_y - y_now
 
-        angle_x = self.pid_x.update(error_x)
-        angle_y = self.pid_y.update(error_y)
+        control_x = self.pid_x.update(error_x)
+        control_y = self.pid_y.update(error_y)
 
-        # 停留检测逻辑
+        brake_x = self.vel_pid_x.update(-vx)  # 速度越大，刹车越重
+        brake_y = self.vel_pid_y.update(-vy)
+
+        angle_x = control_x + brake_x
+        angle_y = control_y + brake_y
+
+        # === 停留检测 ===
         if self.is_in_target_area(x_now, y_now):
             if self.stay_start_time is None:
-                self.stay_start_time = time.time()
+                self.stay_start_time = now_time
         else:
             self.stay_start_time = None
 
         return angle_x, angle_y
 
     def is_in_target_area(self, x, y, threshold=0.05):
-        """
-        判断小球是否在目标区域内
-        Args:
-            x,y:小球当前的归一化坐标
-            threshold:允许的最大误差(半径)
-        """
         if self.target_x is None or x is None:
             return False
         dx = abs(x - self.target_x)
@@ -146,48 +187,32 @@ class BallPIDController:
         return dx < threshold and dy < threshold
 
     def has_stayed_long_enough(self):
-        """
-        用于判断小球是否在某区域停留足够长的时间
-        由self.stay_duration控制停留时间
-        若目标在区域内停留足够时间后脱离区域仍然会返回False
-        """
         if self.stay_start_time is None:
             return False
+        print(time.time() - self.stay_start_time)
         return (time.time() - self.stay_start_time) >= self.stay_duration
-    
 
     def jump_ball(self, send_func, times=10, jump_angle=10, interval=0.6):
-        """
-        控制板面上下跳动，实现球体弹跳效果
-        Args:
-            send_func: 函数接口 send_func(a1, a2, a3, a4) 向STM32发送四个舵机角度
-            times: 跳动次数
-            jump_angle: 跳动幅度（±范围）
-            interval: 每次跳动的间隔时间（秒）
-        """
         print(f"🎮 开始跳动，共 {times} 次，每次间隔 {interval:.2f} 秒，跳动幅度 ±{jump_angle}°")
-        base_angle = 90  # 板面初始水平角度
+        base_angle = 90
         for i in range(times):
-            # 1. 板面快速下沉
-            a_down = base_angle - jump_angle
-            send_func(a_down, a_down, a_down, a_down)
-            time.sleep(0.1)  # 冲击瞬间
-
-            # 2. 快速回到中间位
+            send_func(base_angle - jump_angle, base_angle - jump_angle, base_angle - jump_angle, base_angle - jump_angle)
+            time.sleep(0.1)
             send_func(base_angle, base_angle, base_angle, base_angle)
             time.sleep(interval)
-
             print(f"🔁 第 {i+1}/{times} 次跳动完成")
-        
         print("✅ 跳动动作结束")
 
     def controller_init(self):
-        """
-        初始化PID和计时器
-        """
         self.pid_x.reset()
         self.pid_y.reset()
+        self.vel_pid_x.reset()
+        self.vel_pid_y.reset()
         self.stay_start_time = None
+        self.last_time = None
+        self.last_x = None
+        self.last_y = None
+
 # 预定义路径点（归一化坐标）
 task4_path = [
     get_region_center(1),
@@ -198,3 +223,25 @@ task4_path = [
     ((0.8333 + 0.8333) / 2, (0.5000 + 0.8333) / 2),  # 6->9 中点
     get_region_center(9)
 ]
+
+
+def draw_region_centers(frame, width=640, height=640):
+    """
+    在图像上画出 9 宫格区域中心点（根据归一化坐标转换）
+    Args:
+        frame: 原始图像（BGR）
+        width, height: 图像尺寸（默认640x640）
+    """
+    for region_id in range(1, 10):
+        norm_x, norm_y = get_region_center(region_id)
+        if norm_x is None:
+            continue
+        # 转换为像素坐标
+        px = int(norm_x * width)
+        py = int(norm_y * height)
+
+        # 画圆圈标记中心点
+        cv2.circle(frame, (px, py), 6, (0, 255, 255), -1)
+        # 写上区域号
+        cv2.putText(frame, f"{region_id}", (px + 5, py - 5),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)

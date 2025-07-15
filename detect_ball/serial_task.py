@@ -54,5 +54,7 @@ class Ser:
             a4:舵机4
         Returns:None
         """
-        msg=f'({a1},{a2},{a3},{a4})'
+        msg=f'({a1:.2f},{a2:.2f},{a3:.2f},{a4:.2f})'
+        #print(msg)
         self.send(msg)
+        
